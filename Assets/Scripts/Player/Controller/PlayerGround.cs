@@ -2,7 +2,7 @@ using UnityEngine;
 
 //This script is used by both movement and jump to detect when the character is touching the ground
 
-public class characterGround : MonoBehaviour
+public class PlayerGround : MonoBehaviour
 {
         private bool onGround;
        

@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class characterHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] int maxHealth = 5;
-    [SerializeField] characterMovement movement;
-    [SerializeField] characterJump jump;
-    [SerializeField] float knockbackTime = 1f;
+    public int maxHealth = 5;
+    [SerializeField] PlayerMovement movement;
+    [SerializeField] PlayerJump jump;
+    public float knockbackTime = 1f;
     int currentHealth;
     bool isBlocking;        // сюда ещё вернёмся
 
@@ -69,5 +69,11 @@ public class characterHealth : MonoBehaviour
     {
         movement.isKnockback = flag;
         jump.isKnockback = flag;
+    }
+
+    public void SetHp(int hp)
+    {
+        maxHealth = hp;
+        currentHealth = hp;
     }
 }

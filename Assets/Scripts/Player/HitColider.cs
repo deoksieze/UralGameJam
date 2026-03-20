@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class HitColider : MonoBehaviour
 {
-    public int damage = 1;
-    public float knockBackForce = 10f;
+    public PlayerCombat playerCombat;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -14,6 +13,6 @@ public class HitColider : MonoBehaviour
 
         Vector2 dir = (other.transform.position - transform.root.position).normalized;
 
-        Enemy.TakeDamage(damage, dir*knockBackForce);
+        Enemy.TakeDamage(playerCombat.damage, dir*playerCombat.knockbackForce);
     }
 }

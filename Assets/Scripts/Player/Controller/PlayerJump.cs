@@ -3,11 +3,11 @@ using UnityEngine.InputSystem;
 
 //This script handles moving the character on the Y axis, for jumping and gravity
 
-public class characterJump : MonoBehaviour
+public class PlayerJump : MonoBehaviour
 {
     [Header("Components")]
     [HideInInspector] public Rigidbody2D body;
-    private characterGround ground;
+    private PlayerGround ground;
     [HideInInspector] public Vector2 velocity;
     private characterJuice juice;
     [SerializeField] movementLimiter moveLimit;
@@ -54,7 +54,7 @@ public class characterJump : MonoBehaviour
         //Find the character's Rigidbody and ground detection and juice scripts
 
         body = GetComponent<Rigidbody2D>();
-        ground = GetComponent<characterGround>();
+        ground = GetComponent<PlayerGround>();
         juice = GetComponentInChildren<characterJuice>();
         defaultGravityScale = 1f;
     }

@@ -4,7 +4,7 @@ using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class characterCombat : MonoBehaviour
+public class PlayerCombat : MonoBehaviour
 {
     public GameObject FrontHitColider;
     public GameObject UpHitColider;
@@ -12,14 +12,34 @@ public class characterCombat : MonoBehaviour
     public GameObject BlockColider;
     public BlockHitbox blockZone;
 
-    public characterGround charGround;
-    public characterHealth health;
+    public PlayerGround charGround;
+    public PlayerHealth health;
 
     public float attackDuration = 0.2f;
+    public int damage;
+    public float knockbackForce;
 
     [Header("Calculations")]
     private bool isAttacking;
     private bool isBlocking;
+
+    void Start()
+    {
+        SetupHitCollider(FrontHitColider);
+        SetupHitCollider(UpHitColider);
+        SetupHitCollider(DownHitColider);
+    }
+
+    void SetupHitCollider(GameObject go)
+    {
+        if (go == null) return;
+
+        var hit = go.GetComponent<HitColider>();
+        if (hit != null)
+        {
+            hit.playerCombat = this;
+        }
+    }
 
     public void OnAttack(InputAction.CallbackContext context)
     {

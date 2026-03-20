@@ -7,8 +7,8 @@ using UnityEngine;
 public class characterJuice : MonoBehaviour
 {
     [Header("Components")]
-    characterMovement moveScript;
-    characterJump jumpScript;
+    PlayerMovement moveScript;
+    PlayerJump jumpScript;
     [SerializeField] Animator myAnimator;
     [SerializeField] GameObject characterSprite;
 
@@ -52,8 +52,8 @@ public class characterJuice : MonoBehaviour
 
     void Start()
     {
-        moveScript = GetComponent<characterMovement>();
-        jumpScript = GetComponent<characterJump>();
+        moveScript = GetComponent<PlayerMovement>();
+        jumpScript = GetComponent<PlayerJump>();
     }
 
     void Update()

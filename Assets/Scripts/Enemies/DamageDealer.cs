@@ -11,10 +11,10 @@ public class DamageDealer : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         
-        var playerHealth = other.GetComponent<characterHealth>();
+        var playerHealth = other.GetComponent<PlayerHealth>();
         if (playerHealth == null) return;
         
-        var combat = other.GetComponent<characterCombat>();
+        var combat = other.GetComponent<PlayerCombat>();
 
         bool blocked = combat != null && combat.IsThisDealerBlocked(this);
 
