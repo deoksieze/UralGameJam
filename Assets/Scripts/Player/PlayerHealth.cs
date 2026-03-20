@@ -6,6 +6,8 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth = 5;
     [SerializeField] PlayerMovement movement;
     [SerializeField] PlayerJump jump;
+    [SerializeField] CameraController cam;
+
     public float knockbackTime = 1f;
     int currentHealth;
     bool isBlocking;        // сюда ещё вернёмся
@@ -30,6 +32,9 @@ public class PlayerHealth : MonoBehaviour
         }
 
         if (amount <= 0) return;
+
+        Vector2 dir = knockback.normalized;
+        cam.Shake(dir, magnitude: 0.4f, duration: 0.15f);
 
         StartCoroutine(DoKnockback(knockback*10));
 
