@@ -8,6 +8,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] PlayerJump jump;
     [SerializeField] CameraController cam;
 
+    [SerializeField] HealthBarUI healthBarUI;
+
+
     public float knockbackTime = 1f;
     int currentHealth;
     bool isBlocking;        // сюда ещё вернёмся
@@ -33,6 +36,7 @@ public class PlayerHealth : MonoBehaviour
 
         if (amount <= 0) return;
 
+        UpdateHealthUI();
         Vector2 dir = knockback.normalized;
         cam.Shake(dir, magnitude: 0.4f, duration: 0.15f);
 
@@ -80,5 +84,11 @@ public class PlayerHealth : MonoBehaviour
     {
         maxHealth = hp;
         currentHealth = hp;
+    }
+
+    void UpdateHealthUI()
+    {
+        if (healthBarUI != null)
+            healthBarUI.SetHealth(currentHealth, maxHealth);
     }
 }

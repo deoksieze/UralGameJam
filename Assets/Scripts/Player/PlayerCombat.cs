@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -82,6 +81,7 @@ public class PlayerCombat : MonoBehaviour
         if (!context.performed || isAttacking || isBlocking) return;
 
         isAttacking = true;
+        Debug.Log("Attacking");
         StartCoroutine(DoAttack(hitCollider));
     }
 
