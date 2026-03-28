@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public GameObject MainMenuPanel;
+    public GameObject SettingsPanel;
+
     [SerializeField] string gameSceneName = "GameScene"; // сюда имя сцены с уровнем
 
     public void OnStartButton()
@@ -14,9 +17,9 @@ public class MainMenu : MonoBehaviour
 
     public void OnSettingsButton()
     {
-        // пока можно просто лог или открыть панель настроек
+        MainMenuPanel.SetActive(false);
         Debug.Log("Settings button clicked");
-        // тут позже включишь настройки: settingsPanel.SetActive(true);
+        SettingsPanel.SetActive(true);
     }
 
     public void OnQuitButton()
