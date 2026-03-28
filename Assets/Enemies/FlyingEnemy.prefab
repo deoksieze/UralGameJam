@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1052815572389841130}
   - component: {fileID: 8280476971231092451}
   - component: {fileID: 1524871786681198616}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HitColider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 2464015596832318288}
   - component: {fileID: 4805460375179599691}
   - component: {fileID: 1828136039586403474}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FlyingEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

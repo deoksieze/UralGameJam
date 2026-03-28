@@ -257,6 +257,18 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: fbc48398-12d9-4fce-82bc-336594895891
     m_ActionName: 'Player/Block[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9498cad5-40a2-4a7e-8530-21488aac39c8
+    m_ActionName: 'Player/AttackUp[/Keyboard/w]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dd1bcef2-bd2c-4a43-8019-80ce075fa1eb
+    m_ActionName: 'Player/AttackDown[/Keyboard/s]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c55384cc-057a-4dc3-9a2e-1dbd19079168
+    m_ActionName: 'Player/Inventory[/Keyboard/i]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -287,11 +299,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d04c581c219c2459201c37150ea2cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundLength: 0.8
-  colliderOffset: {x: 0, y: 0, z: 0}
+  groundLength: 0.72
+  colliderOffset: {x: 0.5, y: 0, z: 0}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
 --- !u!114 &162915569647074364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,6 +331,7 @@ MonoBehaviour:
   velocity: {x: 0, y: 0}
   onGround: 0
   pressingKey: 0
+  isKnockback: 0
 --- !u!114 &7655227356076994283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,6 +361,7 @@ MonoBehaviour:
   gravMultiplier: 0
   canJumpAgain: 0
   onGround: 0
+  isKnockback: 0
 --- !u!114 &3842243397389577929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,3 +374,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d409d0b57dc11ca4b8bbc495195ea4d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FrontHitColider: {fileID: 0}
+  UpHitColider: {fileID: 0}
+  DownHitColider: {fileID: 0}
+  BlockColider: {fileID: 0}
+  blockZone: {fileID: 0}
+  charGround: {fileID: 0}
+  health: {fileID: 0}
+  attackDuration: 0.2
+  damage: 0
+  knockbackForce: 0
