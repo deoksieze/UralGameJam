@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] HealthBarUI healthBarUI;
 
+    public PlayerAnimatorView animatorView;
 
     public float knockbackTime = 1f;
     int currentHealth;
@@ -36,6 +37,8 @@ public class PlayerHealth : MonoBehaviour
 
         if (amount <= 0) return;
 
+
+        animatorView.PlayHit();
         UpdateHealthUI();
         Vector2 dir = knockback.normalized;
         cam.Shake(dir, magnitude: 0.4f, duration: 0.15f);

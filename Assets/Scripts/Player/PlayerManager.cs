@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [Header("Tuning")]
-    public float attackDuration = 0.2f;
+    public float attackDuration = 1f;
     public float knockbackForce = 5f;
     public int damage = 1;
     public int maxHealth = 5;

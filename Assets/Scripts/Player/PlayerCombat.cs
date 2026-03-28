@@ -14,7 +14,9 @@ public class PlayerCombat : MonoBehaviour
     public PlayerGround charGround;
     public PlayerHealth health;
 
-    public float attackDuration = 0.2f;
+    public PlayerAnimatorView animatorView;
+
+    public float attackDuration = 1f;
     public int damage;
     public float knockbackForce;
 
@@ -87,7 +89,9 @@ public class PlayerCombat : MonoBehaviour
 
     private IEnumerator DoAttack(GameObject hitCollider)
     {
+        Debug.Log(attackDuration);
         hitCollider.SetActive(true);
+        animatorView.PlayAttack();
         yield return new WaitForSeconds(attackDuration);
         hitCollider.SetActive(false);
         isAttacking = false;
