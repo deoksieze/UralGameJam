@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GroundEnemy2D : MonoBehaviour
@@ -6,13 +7,16 @@ public class GroundEnemy2D : MonoBehaviour
     {
         Patrol,
         Chase,
-        Attack
+        Attack,
+        Stunned,
+        Dead
     }
 
     [Header("Links")]
     public Rigidbody2D rb;
     public Transform[] patrolPoints;
     public Transform player;
+    public Collider2D attackCollider;
 
     [Header("Move")]
     public float patrolSpeed = 2f;
@@ -35,12 +39,24 @@ public class GroundEnemy2D : MonoBehaviour
 
     [Header("Attack")]
     public float attackCooldown = 1f;
+    public float attackActiveTime = 0.25f;
     public int damage = 1;
+
+    [Header("Health")]
+    public int health = 5;
+    public float knockBackTime = 0.25f;
 
     private EnemyState state = EnemyState.Patrol;
     private int currentPointIndex = 0;
     private float nextAttackTime = 0f;
-    private int moveDirection = 1; // 1 = right, -1 = left
+    private int moveDirection = 1;
+
+    private bool isKnockedBack = false;
+    private bool isAttacking = false;
+    private bool isDead = false;
+
+    private Coroutine attackRoutine;
+    private Coroutine knockbackRoutine;
 
     private void Reset()
     {
@@ -51,18 +67,37 @@ public class GroundEnemy2D : MonoBehaviour
     {
         if (rb == null)
             rb = GetComponent<Rigidbody2D>();
+
+        if (attackCollider != null)
+            attackCollider.enabled = false;
     }
 
     private void Update()
     {
-        DetectPlayer();
-        UpdateState();
-        UpdateDirectionLogic();
+        if (isDead)
+            return;
+
+        if (!isKnockedBack)
+        {
+            DetectPlayer();
+            UpdateState();
+            UpdateDirectionLogic();
+        }
+
         UpdateFlip();
     }
 
     private void FixedUpdate()
     {
+        if (isDead)
+            return;
+
+        if (isKnockedBack || isAttacking)
+        {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            return;
+        }
+
         MoveEnemy();
     }
 
@@ -134,7 +169,7 @@ public class GroundEnemy2D : MonoBehaviour
             speed = patrolSpeed;
         else if (state == EnemyState.Chase)
             speed = chaseSpeed;
-        else if (state == EnemyState.Attack)
+        else
             speed = 0f;
 
         bool grounded = IsGrounded();
@@ -164,13 +199,7 @@ public class GroundEnemy2D : MonoBehaviour
         else if (state == EnemyState.Chase)
         {
             if (CanMoveForward(grounded, groundAhead, wallAhead))
-            {
                 moveX = moveDirection * speed;
-            }
-            else
-            {
-                moveX = 0f;
-            }
         }
 
         rb.linearVelocity = new Vector2(moveX, rb.linearVelocity.y);
@@ -190,12 +219,9 @@ public class GroundEnemy2D : MonoBehaviour
 
     private bool IsGroundAhead()
     {
-        Vector2 origin;
-
-        if (frontCheck != null)
-            origin = frontCheck.position;
-        else
-            origin = (Vector2)transform.position + new Vector2(moveDirection * 0.4f, 0f);
+        Vector2 origin = frontCheck != null
+            ? (Vector2)frontCheck.position
+            : (Vector2)transform.position + new Vector2(moveDirection * 0.4f, 0f);
 
         RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, frontGroundCheckDistance, groundLayer);
         return hit.collider != null;
@@ -224,15 +250,87 @@ public class GroundEnemy2D : MonoBehaviour
 
     private void TryAttack()
     {
+        if (isAttacking || isKnockedBack || isDead)
+            return;
+
         if (Time.time < nextAttackTime)
             return;
 
+        attackRoutine = StartCoroutine(AttackRoutine());
+    }
+
+    private IEnumerator AttackRoutine()
+    {
+        isAttacking = true;
         nextAttackTime = Time.time + attackCooldown;
 
-        // Пример:
-        // player.GetComponent<PlayerHealth>()?.TakeDamage(damage);
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
 
-        Debug.Log($"{name} attacks player for {damage} damage");
+        if (attackCollider != null)
+            attackCollider.enabled = true;
+
+        yield return new WaitForSeconds(attackActiveTime);
+
+        if (attackCollider != null)
+            attackCollider.enabled = false;
+
+        isAttacking = false;
+    }
+
+    public void TakeDamage(int amount, Vector2 knockBack)
+    {
+        if (isDead)
+            return;
+
+        health -= amount;
+
+        if (health <= 0)
+        {
+            Die();
+            return;
+        }
+
+        if (knockbackRoutine != null)
+            StopCoroutine(knockbackRoutine);
+
+        knockbackRoutine = StartCoroutine(KnockbackRoutine(knockBack));
+    }
+
+    private IEnumerator KnockbackRoutine(Vector2 knockBack)
+    {
+        isKnockedBack = true;
+        state = EnemyState.Stunned;
+
+        if (attackRoutine != null)
+            StopCoroutine(attackRoutine);
+
+        isAttacking = false;
+
+        if (attackCollider != null)
+            attackCollider.enabled = false;
+
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(knockBack, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(knockBackTime);
+
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+        isKnockedBack = false;
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        state = EnemyState.Dead;
+
+        if (attackRoutine != null)
+            StopCoroutine(attackRoutine);
+
+        if (attackCollider != null)
+            attackCollider.enabled = false;
+
+        rb.linearVelocity = Vector2.zero;
+        Destroy(gameObject);
     }
 
     private void UpdateFlip()
