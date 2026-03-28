@@ -9,8 +9,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Components")]
     [SerializeField] movementLimiter moveLimit;
-    private Rigidbody2D body;
-    PlayerGround ground;
+    public Rigidbody2D body;
+    public PlayerGround ground;
+    public Transform playerTransform;
 
     [Header("Movement Stats")]
     [SerializeField, Range(0f, 20f)][Tooltip("Maximum movement speed")] public float maxSpeed = 10f;
@@ -43,8 +44,8 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         //Find the character's Rigidbody and ground detection script
-        body = GetComponent<Rigidbody2D>();
-        ground = GetComponent<PlayerGround>();
+        // body = GetComponent<Rigidbody2D>();
+        // ground = GetComponent<PlayerGround>();
     }
 
     public void OnMovement(InputAction.CallbackContext context)
@@ -70,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
         //Also tells us that we are currently pressing a direction button
         if (directionX != 0)
         {
-            transform.localScale = new Vector3(directionX > 0 ? 1 : -1, 1, 1);
+            playerTransform.localScale = new Vector3(directionX > 0 ? 1 : -1, 1, 1);
             pressingKey = true;
         }
         else

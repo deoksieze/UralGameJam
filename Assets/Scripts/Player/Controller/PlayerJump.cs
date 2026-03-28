@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerJump : MonoBehaviour
 {
     [Header("Components")]
-    [HideInInspector] public Rigidbody2D body;
-    private PlayerGround ground;
+    public Rigidbody2D body;
+    public PlayerGround ground;
     [HideInInspector] public Vector2 velocity;
     private characterJuice juice;
     [SerializeField] movementLimiter moveLimit;
@@ -53,8 +53,8 @@ public class PlayerJump : MonoBehaviour
     {
         //Find the character's Rigidbody and ground detection and juice scripts
 
-        body = GetComponent<Rigidbody2D>();
-        ground = GetComponent<PlayerGround>();
+        // body = GetComponent<Rigidbody2D>();
+        // ground = GetComponent<PlayerGround>();
         juice = GetComponentInChildren<characterJuice>();
         defaultGravityScale = 1f;
     }

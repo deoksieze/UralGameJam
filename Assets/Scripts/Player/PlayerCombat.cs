@@ -38,7 +38,7 @@ public class PlayerCombat : MonoBehaviour
         var hit = go.GetComponent<HitColider>();
         if (hit != null)
         {
-            hit.playerCombat = this;
+            hit.SetPlayerCombat(this);
         }
     }
 

@@ -3,7 +3,12 @@ using UnityEngine;
 
 public class HitColider : MonoBehaviour
 {
-    public PlayerCombat playerCombat;
+    private PlayerCombat playerCombat;
+
+    public void SetPlayerCombat(PlayerCombat pc)
+    {
+        playerCombat = pc;
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
