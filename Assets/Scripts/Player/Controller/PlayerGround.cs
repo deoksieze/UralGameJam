@@ -14,11 +14,13 @@ public class PlayerGround : MonoBehaviour
         [SerializeField][Tooltip("Which layers are read as the ground")] private LayerMask groundLayer;
  
 
-        private void Update()
+        private void FixedUpdate()
         {
-            //Determine if the player is stood on objects on the ground layer, using a pair of raycasts
-            onGround = Physics2D.Raycast(transform.position + colliderOffset, Vector2.down, groundLength, groundLayer) || Physics2D.Raycast(transform.position - colliderOffset, Vector2.down, groundLength, groundLayer);
+            onGround =
+                Physics2D.Raycast(transform.position + colliderOffset, Vector2.down, groundLength, groundLayer) ||
+                Physics2D.Raycast(transform.position - colliderOffset, Vector2.down, groundLength, groundLayer);
         }
+
 
         private void OnDrawGizmos()
         {

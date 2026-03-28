@@ -127,23 +127,58 @@ public class PlayerJump : MonoBehaviour
         body.gravityScale = (newGravity.y / Physics2D.gravity.y) * gravMultiplier;
     }
 
-    private void FixedUpdate()
+
+
+        private void FixedUpdate()
     {
-        //Get velocity from Kit's Rigidbody 
         velocity = body.linearVelocity;
 
-        //Keep trying to do a jump, for as long as desiredJump is true
+        bool jumpedThisFrame = false;
+
         if (desiredJump && !isKnockback)
         {
-            DoAJump();
-            body.linearVelocity = velocity;
+            jumpedThisFrame = DoAJump();
 
-            //Skip gravity calculations this frame, so currentlyJumping doesn't turn off
-            //This makes sure you can't do the coyote time double jump bug
-            return;
+            if (jumpedThisFrame)
+            {
+                body.linearVelocity = velocity;
+                return;
+            }
         }
 
         calculateGravity();
+    }
+
+    private bool DoAJump()
+    {
+        if (onGround || (coyoteTimeCounter > 0.03f && coyoteTimeCounter < coyoteTime) || canJumpAgain)
+        {
+            desiredJump = false;
+            jumpBufferCounter = 0;
+            coyoteTimeCounter = 0;
+
+            canJumpAgain = (maxAirJumps == 1 && canJumpAgain == false);
+
+            jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * body.gravityScale * jumpHeight);
+
+            if (velocity.y > 0f)
+                jumpSpeed = Mathf.Max(jumpSpeed - velocity.y, 0f);
+            else if (velocity.y < 0f)
+                jumpSpeed += Mathf.Abs(body.linearVelocity.y);
+
+            velocity.y += jumpSpeed;
+            currentlyJumping = true;
+
+            if (juice != null)
+                juice.jumpEffects();
+
+            return true;
+        }
+
+        if (jumpBuffer == 0)
+            desiredJump = false;
+
+        return false;
     }
 
     private void calculateGravity()
@@ -209,51 +244,6 @@ public class PlayerJump : MonoBehaviour
         //Set the character's Rigidbody's velocity
         //But clamp the Y variable within the bounds of the speed limit, for the terminal velocity assist option
         body.linearVelocity = new Vector3(velocity.x, Mathf.Clamp(velocity.y, -speedLimit, 100));
-    }
-
-    private void DoAJump()
-    {
-
-        //Create the jump, provided we are on the ground, in coyote time, or have a double jump available
-        if (onGround || (coyoteTimeCounter > 0.03f && coyoteTimeCounter < coyoteTime) || canJumpAgain)
-        {
-            desiredJump = false;
-            jumpBufferCounter = 0;
-            coyoteTimeCounter = 0;
-
-            //If we have double jump on, allow us to jump again (but only once)
-            canJumpAgain = (maxAirJumps == 1 && canJumpAgain == false);
-
-            //Determine the power of the jump, based on our gravity and stats
-            jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * body.gravityScale * jumpHeight);
-
-            //If Kit is moving up or down when she jumps (such as when doing a double jump), change the jumpSpeed;
-            //This will ensure the jump is the exact same strength, no matter your velocity.
-            if (velocity.y > 0f)
-            {
-                jumpSpeed = Mathf.Max(jumpSpeed - velocity.y, 0f);
-            }
-            else if (velocity.y < 0f)
-            {
-                jumpSpeed += Mathf.Abs(body.linearVelocity.y);
-            }
-
-            //Apply the new jumpSpeed to the velocity. It will be sent to the Rigidbody in FixedUpdate;
-            velocity.y += jumpSpeed;
-            currentlyJumping = true;
-
-            if (juice != null)
-            {
-                //Apply the jumping effects on the juice script
-                juice.jumpEffects();
-            }
-        }
-
-        if (jumpBuffer == 0)
-        {
-            //If we don't have a jump buffer, then turn off desiredJump immediately after hitting jumping
-            desiredJump = false;
-        }
     }
 
     public void bounceUp(float bounceAmount)
