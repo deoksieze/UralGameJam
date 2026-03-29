@@ -145,7 +145,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2861102217268889512, guid: e18d737a7e063a543925c7c2f73a0ed1, type: 3}
+  m_Sprite: {fileID: -8815840715642398153, guid: 09ed13a8ab19330448e844f89535d1eb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -191,9 +191,9 @@ GameObject:
   - component: {fileID: 2367060703529245115}
   - component: {fileID: 6878535796355630198}
   - component: {fileID: 4020882045413766633}
-  - component: {fileID: 5757004068486598364}
+  - component: {fileID: 4871351603268430826}
   m_Layer: 3
-  m_Name: Rouge_Elf
+  m_Name: Rouge_Gnome
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5fd529e08b988408ec807d4491404e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5757004068486598364
+--- !u!114 &4871351603268430826
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

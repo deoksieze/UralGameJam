@@ -31,8 +31,8 @@ public class PlayerAnimatorView : MonoBehaviour
         animator.SetTrigger("Attack");
     }
 
-    public void SetDead(bool value)
+    public void SetDead()
     {
-        animator.SetBool("Dead", value);
+        animator.SetTrigger("Death");
     }
 }

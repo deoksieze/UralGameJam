@@ -71,8 +71,10 @@ public class PlayerHealth : MonoBehaviour
         SetKnockback(false);
     }
 
-    void Die()
+    [ContextMenu("Kill Hero")]
+    public void Die()
     {
+        animatorView.SetDead();
         Debug.Log("Player is dead");
         // анимация смерти, отключение управления и т.п.
     }
