@@ -1745,6 +1745,65 @@ MonoBehaviour:
   currentItem: {fileID: 0}
   isHotbarSlot: 0
   hotbar: {fileID: 0}
+--- !u!1 &759915552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 759915554}
+  - component: {fileID: 759915553}
+  m_Layer: 0
+  m_Name: DeathHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &759915553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759915552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a84e09542c6ed541857a12c03c09463, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneCamera: {fileID: 519420031}
+  currentPlayer: {fileID: 552224751}
+  currentPlayerInput: {fileID: 141994467}
+  currentPlayerAnimator: {fileID: 1072747430}
+  heirPrefab: {fileID: 295989979}
+  heirSpawnOffsetX: 4
+  heirStopOffsetX: -1
+  heirWalkSpeed: 2.5
+  cameraOffset: {x: 0, y: 0, z: -10}
+  gameplaySize: 5
+  deathZoomSize: 2.5
+  cameraMoveSpeed: 6
+  deathAnimWait: 0.5
+  afterZoomWait: 0.25
+  afterHeirArrivesWait: 0.4
+--- !u!4 &759915554
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759915552}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.555233, y: -0.205735, z: 0.48315704}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &773854771
 GameObject:
   m_ObjectHideFlags: 0
@@ -2767,6 +2826,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 647274616960042212, guid: 32604dca5d09f5f4a86a0e97195a2977, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: aa09f4989ca4e01419fec76c356cc1b7, type: 2}
     - target: {fileID: 2691516350129957068, guid: 32604dca5d09f5f4a86a0e97195a2977, type: 3}
       propertyPath: m_Constraints
       value: 4
@@ -4289,6 +4352,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 141994468}
+  - {fileID: 759915554}
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1273134126}
