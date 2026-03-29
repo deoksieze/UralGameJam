@@ -15,12 +15,19 @@ public class PlayerManager : MonoBehaviour
     public PlayerCombat combat;
     public PlayerMovement movement;
     public PlayerJump jump;
-    
     public PlayerAnimatorView animatorView;
+    public DeathInheritanceSequence deathInheritanceSequence;
+
+    public CameraController cameraController;
+
+    [SerializeField]
+    private GameObject lastHero;
 
     [Header("Swaping Heroes")]
-    public List<GameObject> Heroes;
+    public List<GameObject> HeroesPrefabs;
     private int curHeroIndx = 0;
+
+    private PlayerGather gathering;
 
 
     void Awake()
@@ -37,20 +44,32 @@ public class PlayerManager : MonoBehaviour
         health.SetHp(maxHealth);
         health.knockbackTime = knockbackTime;
 
+        gathering = lastHero.GetComponent<PlayerGather>();
+
 
     }
 
     [ContextMenu("SwapHeroes")]
-    void SwapHeroes()
+    public void SwapHeroes()
     {
-        Heroes[curHeroIndx].SetActive(false);
+        // Heroes[curHeroIndx].SetActive(false);
 
-        curHeroIndx = (curHeroIndx + 1) % Heroes.Capacity;   
+        curHeroIndx = (curHeroIndx + 1) % HeroesPrefabs.Capacity;   
+        Debug.Log(curHeroIndx);
 
-        GameObject currentHero = Heroes[curHeroIndx];
-        currentHero.SetActive(true);
 
-        PlayerGather gathering = currentHero.GetComponent<PlayerGather>();
+        lastHero.layer = 6;
+
+        GameObject currentHero = HeroesPrefabs[curHeroIndx];
+
+        deathInheritanceSequence.PlaySequence(currentHero);
+
+    }
+
+    public void SetUpHero(GameObject currentHero)
+    {
+        lastHero = currentHero;
+        gathering = lastHero.GetComponent<PlayerGather>();
         Rigidbody2D rb = gathering.rb;
         Collider2D cd = gathering.c2d;
         PlayerGround pg = gathering.pg;
@@ -77,7 +96,9 @@ public class PlayerManager : MonoBehaviour
         animatorView.rb = rb;
         animatorView.bodyCollider = cd;
 
+        deathInheritanceSequence.currentPlayerAnimator = an;
+        deathInheritanceSequence.currentPlayer = tf;
 
-
+        cameraController.target = tf;
     }
 }

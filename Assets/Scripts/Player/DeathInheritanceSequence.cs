@@ -8,13 +8,12 @@ public class DeathInheritanceSequence : MonoBehaviour
     [Header("Refs")]
     public Camera sceneCamera;
     public Transform currentPlayer;
-    public MonoBehaviour currentPlayerInput;
+    public MonoBehaviour playerInput;
     public Animator currentPlayerAnimator;
 
-    public Input input;
+    public PlayerManager pm;
 
     [Header("Heir")]
-    public GameObject heirPrefab;
     public float heirSpawnOffsetX = -1f;
     public float heirStopOffsetX = -1.0f;
     public float heirWalkSpeed = 2.5f;
@@ -37,26 +36,15 @@ public class DeathInheritanceSequence : MonoBehaviour
         Instance = this;
     }
 
-    // public void PlaySequence(Transform deadPlayer, Animator deadAnimator, MonoBehaviour inputToDisable)
-    // {
-    //     if (sequenceRunning) return;
-
-    //     currentPlayer = deadPlayer;
-    //     currentPlayerAnimator = deadAnimator;
-    //     currentPlayerInput = inputToDisable;
-
-    //     StartCoroutine(SequenceRoutine());
-    // }
-
     [ContextMenu("PlayerSequence")]
-    public void PlaySequence()
+    public void PlaySequence(GameObject heirPrefab)
     {
         if (sequenceRunning) return;
 
-        StartCoroutine(SequenceRoutine());
+        StartCoroutine(SequenceRoutine(heirPrefab));
     }
 
-    private IEnumerator SequenceRoutine()
+    private IEnumerator SequenceRoutine(GameObject heirPrefab)
     {
         sequenceRunning = true;
 
@@ -70,7 +58,7 @@ public class DeathInheritanceSequence : MonoBehaviour
         yield return new WaitForSeconds(deathAnimWait);
 
 
-        Vector3 corpseFocusPoint = currentPlayer.position + cameraOffset;
+        // Vector3 corpseFocusPoint = currentPlayer.position + cameraOffset;
         // yield return StartCoroutine(MoveCameraTo(corpseFocusPoint, deathZoomSize));
 
 
@@ -80,14 +68,13 @@ public class DeathInheritanceSequence : MonoBehaviour
         Vector3 spawnPos = currentPlayer.position + new Vector3(heirSpawnOffsetX, 0f, 0f);
         GameObject heir = Instantiate(heirPrefab, spawnPos, Quaternion.identity);
         heir.SetActive(true);
+        pm.SetUpHero(heir);
 
 
         Animator heirAnimator = heir.GetComponentInChildren<Animator>();
-        MonoBehaviour heirInput = heir.GetComponent<MonoBehaviour>();
 
-
-        if (heirInput != null)
-            heirInput.enabled = false;
+        if (playerInput != null)
+            playerInput.enabled = false;
 
         Vector3 heirTarget = currentPlayer.position + new Vector3(heirStopOffsetX, 0f, 0f);
 
@@ -99,15 +86,14 @@ public class DeathInheritanceSequence : MonoBehaviour
         if (heirAnimator != null)
         {
             heirAnimator.SetFloat("Speed", 0);
-            // heirAnimator.SetTrigger("RaiseSword");
         }
 
         yield return new WaitForSeconds(afterHeirArrivesWait);
 
         // yield return StartCoroutine(MoveCameraTo(heir.transform.position + cameraOffset, gameplaySize));
 
-        if (heirInput != null)
-            heirInput.enabled = true;
+        if (playerInput != null)
+            playerInput.enabled = true;
 
         if (EnemyManager.Instance != null)
             EnemyManager.Instance.SetEnemiesPaused(false);

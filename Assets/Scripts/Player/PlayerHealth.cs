@@ -10,6 +10,8 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] HealthBarUI healthBarUI;
 
+    [SerializeField] PlayerManager playerManager;
+
     public PlayerAnimatorView animatorView;
 
     public float knockbackTime = 1f;
@@ -74,9 +76,7 @@ public class PlayerHealth : MonoBehaviour
     [ContextMenu("Kill Hero")]
     public void Die()
     {
-        animatorView.SetDead();
-        Debug.Log("Player is dead");
-        // анимация смерти, отключение управления и т.п.
+        playerManager.SwapHeroes();
     }
 
     void SetKnockback(bool flag)

@@ -15,6 +15,7 @@ public class PlayerAnimatorView : MonoBehaviour
         bool isFalling = !isGrounded && rb.linearVelocity.y < -0.1f;
 
 
+
         animator.SetFloat("Speed", speed);
         animator.SetBool("Up", isJumping);
         animator.SetBool("Down", isFalling);
